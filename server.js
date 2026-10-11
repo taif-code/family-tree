@@ -13,8 +13,12 @@ const RELATIONS = ["wife", "daughter", "granddaughter"];
 const DEFAULT_STATE = {
   settings: {
     title: "شجرة العائلة",
-    target: 40,
-    families: ["الفخذ الأول", "الفخذ الثاني", "الفخذ الثالث", "الفخذ الرابع"],
+    target: 130,
+    // outline = تقسيم الشجرة. إذا كان فاضي تستخدم الصفحة التقسيم الافتراضي اللي في index.html
+    // سطر يبدأ بـ #  = فرع رئيسي (وبعد | الوصف)
+    // سطر يبدأ بـ ## = مجموعة داخل الفرع
+    // أي سطر ثاني    = عائلة داخل المجموعة
+    outline: "",
   },
   members: [],
 };
@@ -66,7 +70,7 @@ const server = http.createServer(async (req, res) => {
         id: clean(b.id, 40) || Date.now().toString(36),
         name: clean(b.name, 40),
         relation: RELATIONS.includes(b.relation) ? b.relation : "daughter",
-        family: clean(b.family, 60),
+        family: clean(b.family, 200),
         createdAt: Date.now(),
       };
       if (!m.name || !m.family) return send(res, 400, { error: "الاسم والفخذ مطلوبة" });
@@ -83,10 +87,10 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === "/api/settings" && req.method === "PUT") {
       if (!isLocal(req)) return send(res, 403, { error: "الإعدادات من جهاز المنظّم فقط" });
       const b = await readBody(req);
-      const families = Array.isArray(b.families) ? b.families.map((f) => clean(f, 60)).filter(Boolean) : [];
+      const outline = String(b.outline || "").slice(0, 20000);
       const target = parseInt(b.target, 10);
-      if (!families.length || !(target > 0)) return send(res, 400, { error: "بيانات غير صحيحة" });
-      state.settings = { title: clean(b.title, 50) || "شجرة العائلة", target, families };
+      if (!outline.trim() || !(target > 0)) return send(res, 400, { error: "بيانات غير صحيحة" });
+      state.settings = { title: clean(b.title, 50) || "شجرة العائلة", target, outline };
       save(state);
       return send(res, 200, state.settings);
     }

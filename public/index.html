@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>شجرة العائلة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -16,8 +16,8 @@
   --bg:#F4ECDD; --surface:#FBF6EC; --ink:#2F2A21; --muted:#7A6F5D; --line:#E2D5BE;
   --leaf1:#4E8A31; --leaf3:#3F6E2C; --leaf4:#9CC25A;
   --gold:#A9781C; --gold-soft:#F0E1BF; --danger:#A23B2E;
-  --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
-  --body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+  --display:"Cairo",Tahoma,sans-serif;
+  --body:"Cairo",Tahoma,"Segoe UI",sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -25,7 +25,7 @@
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;direction:rtl}
 .wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:grid;gap:20px}
 header{display:grid;gap:14px}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,42px);margin:0;line-height:1.2;text-wrap:balance}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,42px);margin:0;line-height:1.2;text-wrap:balance}
 .sub{color:var(--muted);margin:0}
 .counter{display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .counter-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
@@ -58,21 +58,35 @@ fieldset.rel legend{font-weight:600;font-size:14px;padding:0;margin-bottom:8px}
 .rel-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media (max-width:640px){.rel-opts{grid-template-columns:1fr}}
 .rel-opt{position:relative;cursor:pointer;font-weight:400}
+.branch-opts{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
 .rel-opt input{position:absolute;opacity:0;pointer-events:none}
 .rel-card{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);transition:border-color .2s,box-shadow .2s}
 .rel-card b{font-size:15px}
 .rel-card small{grid-column:2;color:var(--muted);font-size:12.5px}
-.rel-card .dot{grid-row:span 2;width:18px;height:24px;background:var(--c);border-radius:0 100% 0 100%;transform:rotate(45deg)}
-.rel-opt input:checked+.rel-card{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.rel-card .leaf-ic,.rel-card .twig-ic{grid-row:span 2;display:block;color:var(--c);transition:transform .35s ease}
+.rel-card .leaf-ic{width:34px;height:48px;margin-inline:2px 6px;transform:rotate(-28deg);transform-origin:50% 92%;filter:drop-shadow(0 2px 2px rgb(60 40 20 / .18))}
+.rel-card .twig-ic{width:40px;height:40px;margin-inline-end:4px}
+.rel-opt:hover .leaf-ic{transform:rotate(-16deg) scale(1.06)}
+.rel-opt input:checked+.rel-card{border-color:var(--c);background:color-mix(in srgb,var(--c) 9%,var(--bg));box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 20%,transparent)}
+.rel-opt input:checked+.rel-card .leaf-ic{animation:leafSway 1.8s ease-in-out infinite alternate}
+.rel-opt input:checked+.rel-card .twig-ic{transform:rotate(-6deg) scale(1.08)}
+@keyframes leafSway{from{transform:rotate(-36deg) scale(1.08)}to{transform:rotate(-12deg) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.rel-opt input:checked+.rel-card .leaf-ic{animation:none}}
 .rel-opt input:focus-visible+.rel-card{outline:2px solid var(--gold);outline-offset:2px}
 .legend{position:absolute;bottom:36px;inset-inline-start:12px;display:flex;flex-direction:column;gap:2px;background:rgb(20 28 40 / .45);backdrop-filter:blur(6px);color:#fff;font-size:12px;padding:6px 10px;border-radius:12px;pointer-events:none}
 .legend span{display:flex;align-items:center;gap:6px}
 .legend i{width:9px;height:12px;border-radius:0 100% 0 100%;transform:rotate(45deg);background:var(--c)}
 @media (max-width:640px){.legend{flex-direction:row;gap:10px;bottom:auto;top:58px;inset-inline-start:auto;left:50%;transform:translateX(-50%);white-space:nowrap}}
+@media (max-width:640px){.stage.zoomed .legend{display:none}}
 .welcome{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);max-width:min(440px,calc(100% - 32px));width:max-content;text-align:center;background:rgb(255 252 244 / .94);color:#2b2414;border-radius:20px;padding:20px 26px;box-shadow:0 18px 50px rgb(0 0 0 / .3);opacity:0;transition:opacity .5s,transform .5s;pointer-events:none;z-index:4;border-top:6px solid var(--wc,#4E8A31)}
 .welcome.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .welcome .w1{font-family:var(--display);font-size:clamp(22px,5vw,30px);line-height:1.35;margin:0;text-wrap:balance}
 .welcome .w2{margin:6px 0 0;color:#5b5240;font-size:15px}
+.ic{width:1.15em;height:1.15em;flex:none;vertical-align:-.2em}
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.back{display:inline-flex;align-items:center;gap:6px}
+.w-ic{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;color:var(--wc,#4E8A31);background:color-mix(in srgb,var(--wc,#4E8A31) 14%,#fff)}
+.w-ic .ic{width:28px;height:28px}
 .err{color:var(--danger);font-size:14px;margin:0}
 .primary{font:inherit;font-weight:600;font-size:17px;background:var(--leaf3);color:#fff;border:0;border-radius:12px;padding:13px 20px;cursor:pointer}
 .primary:disabled{opacity:.55;cursor:not-allowed}
@@ -123,7 +137,7 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
 <div class="wrap">
   <header>
     <h1 id="title">شجرة العائلة</h1>
-    <p class="sub">كل وحدة تسجّل اسمها وقرابتها وفخذها، فتطيح ورقتها على غصن فخذها، حتى تكتمل الشجرة.</p>
+    <p class="sub">كل وحدة تسجّل اسمها وقرابتها وعائلتها، فتطيح ورقتها على غصن عائلتها، حتى تكتمل الشجرة.</p>
     <div class="counter" aria-live="polite">
       <div class="counter-top">
         <div class="count-text" id="countText">سجّل <b>٠</b> من ٤٠</div>
@@ -134,7 +148,7 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
     </div>
   </header>
 
-  <div id="noDb" class="notice" hidden>ما قدرت أوصل للسيرفر. تأكد إن الأمر node server.js شغّال في VS Code.</div>
+  <div id="noDb" class="notice" hidden>ما قدرت أوصل للسيرفر. تأكد إن الأمر npm start شغّال في VS Code.</div>
 
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" id="tab-form" aria-selected="true" aria-controls="view-form">سجّلي بياناتك</button>
@@ -143,18 +157,49 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
 
   <section id="view-form" role="tabpanel" aria-labelledby="tab-form">
     <form id="regForm" novalidate>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="leafSym" viewBox="0 0 40 60">
+          <path d="M20 58 Q19.5 53 20 49" stroke="#6b4a2b" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M20 50 C6 44 1.5 27 9 15 C12.5 9.5 16.5 6.5 20 3 C23.5 6.5 27.5 9.5 31 15 C38.5 27 34 44 20 50 Z" fill="currentColor"/>
+          <path d="M20 50 C6 44 1.5 27 9 15 C12.5 9.5 16.5 6.5 20 3 Z" fill="#fff" opacity=".18"/>
+          <path d="M20 50 C6 44 1.5 27 9 15 C12.5 9.5 16.5 6.5 20 3 C23.5 6.5 27.5 9.5 31 15 C38.5 27 34 44 20 50 Z" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="1"/>
+          <g fill="none" stroke="#fff" stroke-opacity=".6" stroke-linecap="round">
+            <path d="M20 49 Q20.8 28 20 6" stroke-width="1.4"/>
+            <path d="M20 41 Q14 38.5 9.5 33.5 M20 41 Q26 38.5 30.5 33.5" stroke-width="1"/>
+            <path d="M20 32 Q14.5 29 11 23.5 M20 32 Q25.5 29 29 23.5" stroke-width="1"/>
+            <path d="M20 23 Q16 20 14 15.5 M20 23 Q24 20 26 15.5" stroke-width=".9"/>
+          </g>
+        </symbol>
+        <symbol id="twigSym" viewBox="0 0 40 40">
+          <path d="M6 36 C14 28 20 22 34 8" stroke="#6b4a2b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M17 25 C14 19 15 14 18 10" stroke="#6b4a2b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M34 8 C27 6 23 10 24 15 C29 16 33 13 34 8 Z" fill="currentColor"/>
+          <path d="M18 10 C13 7 9 9 9 14 C14 15 17 13 18 10 Z" fill="currentColor" opacity=".85"/>
+          <path d="M25 18 C27 23 31 25 35 24 C34 19 30 17 25 18 Z" fill="currentColor" opacity=".7"/>
+          <path d="M12 30 C9 26 5 26 3 28 C5 32 9 32 12 30 Z" fill="currentColor" opacity=".9"/>
+        </symbol>
+      </defs>
+    </svg>
       <div class="field"><label for="f-name">الاسم</label><input id="f-name" name="name" required maxlength="40" placeholder="مثال: سارة" autocomplete="given-name"></div>
       <fieldset class="rel">
         <legend>القرابة</legend>
         <div class="rel-opts">
-          <label class="rel-opt"><input type="radio" name="relation" value="wife" id="r-wife"><span class="rel-card"><i class="dot" style="--c:#C0392B"></i><b>زوجة من العائلة</b><small>زوجة أحد أبناء العائلة · ورقة حمراء</small></span></label>
-          <label class="rel-opt"><input type="radio" name="relation" value="daughter" id="r-daughter"><span class="rel-card"><i class="dot" style="--c:#4E8A31"></i><b>بنت العائلة</b><small>بنت أحد أبناء العائلة · ورقة خضراء</small></span></label>
-          <label class="rel-opt"><input type="radio" name="relation" value="granddaughter" id="r-grand"><span class="rel-card"><i class="dot" style="--c:#E07B1F"></i><b>بنت بنت العائلة</b><small>أمها من بنات العائلة · ورقة برتقالية</small></span></label>
+          <label class="rel-opt" style="--c:#C0392B"><input type="radio" name="relation" value="wife" id="r-wife"><span class="rel-card"><svg class="leaf-ic" aria-hidden="true"><use href="#leafSym"/></svg><b>زوجة من العائلة</b><small>زوجة أحد أبناء العائلة · ورقة حمراء</small></span></label>
+          <label class="rel-opt" style="--c:#4E8A31"><input type="radio" name="relation" value="daughter" id="r-daughter"><span class="rel-card"><svg class="leaf-ic" aria-hidden="true"><use href="#leafSym"/></svg><b>بنت العائلة</b><small>بنت أحد أبناء العائلة · ورقة خضراء</small></span></label>
+          <label class="rel-opt" style="--c:#E07B1F"><input type="radio" name="relation" value="granddaughter" id="r-grand"><span class="rel-card"><svg class="leaf-ic" aria-hidden="true"><use href="#leafSym"/></svg><b>بنت بنت العائلة</b><small>أمها من بنات العائلة · ورقة برتقالية</small></span></label>
         </div>
       </fieldset>
-      <div class="field"><label for="f-family">الفخذ</label><select id="f-family" name="family" required></select></div>
+      <fieldset class="rel">
+        <legend>الفرع</legend>
+        <div class="rel-opts branch-opts" id="branchOpts"></div>
+      </fieldset>
+      <div class="grid2">
+        <div class="field" id="groupField"><label for="f-group">المجموعة</label><select id="f-group"></select></div>
+        <div class="field"><label for="f-family">العائلة</label><select id="f-family" name="family" required></select></div>
+      </div>
       <p class="err" id="formErr" hidden></p>
-      <button class="primary" id="submitBtn" type="submit">سجّلي وعلّقي ورقتك 🍃</button>
+      <button class="primary" id="submitBtn" type="submit"><span>سجّلي وعلّقي ورقتك</span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-13.5 14-14 0 9-5 14-14 14z"/><path d="M5 19c3-4 6.5-7.5 10.5-10"/></svg></button>
     </form>
   </section>
 
@@ -164,7 +209,7 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
       <canvas id="cv" aria-label="شجرة العائلة، كل فخذ غصن وكل فرد أوراق على غصنه"></canvas>
       <div class="zoombar" id="zoombar" hidden>
         <span class="zt" id="zoomTitle"></span>
-        <button class="back" type="button" id="backBtn">→ كل الشجرة</button>
+        <button class="back" type="button" id="backBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>كل الشجرة</span></button>
       </div>
       <div class="sky-ui" id="skyUi" role="group" aria-label="وقت السماء">
         <button type="button" data-p="auto" aria-pressed="true">تلقائي</button>
@@ -176,7 +221,7 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
       <p class="empty-msg" id="emptyMsg" hidden>الشجرة فاضية، تنتظر أول ورقة</p>
       <p class="hint" id="hint">اضغطي على أي فخذ عشان تشوفين أوراقه</p>
       <div class="legend" aria-hidden="true"><span><i style="--c:#C0392B"></i>زوجة من العائلة</span><span><i style="--c:#5E9A3A"></i>بنت العائلة</span><span><i style="--c:#E8892A"></i>بنت بنت العائلة</span></div>
-      <div class="welcome" id="welcome" role="status" aria-live="polite"><p class="w1" id="w1"></p><p class="w2" id="w2"></p></div>
+      <div class="welcome" id="welcome" role="status" aria-live="polite"><div class="w-ic" id="wIc"></div><p class="w1" id="w1"></p><p class="w2" id="w2"></p></div>
       <div class="card" id="card" hidden></div>
     </div>
   </section>
@@ -186,8 +231,8 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
     <div class="inner">
       <div class="field"><label for="s-title">عنوان الصفحة</label><input id="s-title" maxlength="50"></div>
       <div class="field"><label for="s-target">العدد المتوقع</label><input id="s-target" type="number" min="1" max="2000" inputmode="numeric"></div>
-      <div class="field"><label for="s-families">الأفخاذ <small>(كل فخذ في سطر)</small></label><textarea id="s-families"></textarea></div>
-      <p class="help">تقدر تحذف أي ورقة من بطاقتها في الشجرة. حذف فخذ من القائمة ما يحذف أوراقه.</p>
+      <div class="field"><label for="s-families">تقسيم الشجرة</label><textarea id="s-families" rows="16" dir="rtl" spellcheck="false"></textarea></div>
+      <p class="help">سطر يبدأ بـ <b>#</b> = فرع رئيسي (وبعد | الوصف)، وسطر يبدأ بـ <b>##</b> = مجموعة، وأي سطر ثاني = عائلة. تقدر تحذف أي ورقة من بطاقتها في الشجرة.</p>
       <p class="err" id="adminErr" hidden></p>
       <div><button class="primary" id="saveSettings" type="button">حفظ الإعدادات</button></div>
     </div>
@@ -197,20 +242,27 @@ details.admin .inner{display:grid;gap:12px;margin-top:12px}
 
 <script>
 (function(){
-const DEFAULTS={title:"شجرة العائلة",target:40,families:["الفخذ الأول","الفخذ الثاني","الفخذ الثالث","الفخذ الرابع"]};
+const DEFAULTS={title:"شجرة العائلة",target:130,outline:"# إبراهيم | العوائل الموجودة في الحجاز\n## أهل بابا\nأهل أحمد\nأهل سيدي أحمد\nأهل الطيب الحبيب\nأهل محمد العين\nأهل أحمد البشير\n## المحاظر\nأهل أحمد\nأهل بوك\nأهل الطالب\nأهل أباه\nأهل محمد\n## أولاد خالي\nأهل بدّه\nأهل أحمد\nأهل سيدي محمد\nأهل الطالب عبده\nأهل أكاي\n## أولاد عمي الأمين\nأهل محمد الناجم\nأهل سيدي المختار\nأهل الطالب\nأهل عبدالله\nأهل أباه\nأهل الطالب أيده\nأهل سيدي أيده\n## أولاد سيدي الوافي\nأهل عبدالله\nأهل محمود\nأهل أباه\nأهل سيدي محمود\n## أولاد طالب\nأهل مهدي\nأهل عبيد\n# يعقوب | العوائل الموجودة في المدينة\nأهل سيدي أحمد\nأهل الإمام\nأهل دده\nأهل الحسن\nأهل الشيخ أبي\nأهل الشواف\nأهل أمين\nأهل مائه\nأهل أحمد مولود\nأهل أباته\nأهل بشري\nأهل الطالب أعلي\nأهل عيسى\nأهل سيدي محمد\nأهل بوبه\nأهل خالد"};
 let settings={...DEFAULTS};
 let members=[];
 let db=null,isAdmin=false,pendingFly=null,selectedId=null,celebrated=false;
 const $=id=>document.getElementById(id);
 const ar=n=>Number(n).toLocaleString("ar-SA");
 const LS="familyTree.mine";
+const ICONS={
+  leaf:'<path d="M5 19c0-8 5-13.5 14-14 0 9-5 14-14 14z"/><path d="M5 19c3-4 6.5-7.5 10.5-10"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  flower:'<circle cx="12" cy="12" r="2.4"/><path d="M12 9.6C10.4 6.6 10.4 4.6 12 3c1.6 1.6 1.6 3.6 0 6.6zM12 14.4c1.6 3 1.6 5 0 6.6-1.6-1.6-1.6-3.6 0-6.6zM9.6 12c-3 1.6-5 1.6-6.6 0 1.6-1.6 3.6-1.6 6.6 0zM14.4 12c3-1.6 5-1.6 6.6 0-1.6 1.6-3.6 1.6-6.6 0z"/>',
+  heart:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
+  sparkle:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>'};
+const icon=n=>'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';
 const REL={
-  wife:{label:"زوجة من العائلة",color:"#C0392B",welcome:n=>"أهلاً بعروسة ولدنا "+n,sub:"نورتي العائلة 🌹"},
-  daughter:{label:"بنت العائلة",color:"#4E8A31",welcome:n=>"يا هلا ببنتنا الغالية "+n,sub:"نور البيت وفرحة العائلة 💚"},
-  granddaughter:{label:"بنت بنت العائلة",color:"#E07B1F",welcome:n=>"يا هلا بحفيدتنا الغالية "+n,sub:"حيّاك الله بين أهلك وناسك 🧡"}};
+  wife:{label:"زوجة من العائلة",color:"#C0392B",welcome:n=>"أهلاً بعروسة ولدنا "+n,sub:"نورتي العائلة",icon:"flower"},
+  daughter:{label:"بنت العائلة",color:"#4E8A31",welcome:n=>"يا هلا ببنتنا الغالية "+n,sub:"نور البيت وفرحة العائلة",icon:"heart"},
+  granddaughter:{label:"بنت بنت العائلة",color:"#E07B1F",welcome:n=>"يا هلا بحفيدتنا الغالية "+n,sub:"حيّاك الله بين أهلك وناسك",icon:"sparkle"}};
 const relOf=m=>REL[m&&m.relation]?m.relation:"daughter";
 let welcomeTimer=null;
-function showWelcome(m){const R=REL[relOf(m)],w=$("welcome");$("w1").textContent=R.welcome(m.name);$("w2").textContent=R.sub;
+function showWelcome(m){const R=REL[relOf(m)],w=$("welcome");$("w1").textContent=R.welcome(m.name);$("w2").textContent=R.sub;$("wIc").innerHTML=icon(R.icon);
   w.style.setProperty("--wc",R.color);w.classList.add("on");clearTimeout(welcomeTimer);welcomeTimer=setTimeout(()=>w.classList.remove("on"),6500)}
 const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function mine(){try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}}
@@ -234,16 +286,59 @@ function show(view){
 }
 $("tab-form").onclick=()=>show("form");
 $("tab-tree").onclick=()=>show("tree");
-function familyList(){
-  const fams=[...settings.families];
-  members.forEach(m=>{if(m.family&&!fams.includes(m.family))fams.push(m.family)});
-  return fams;
+/* ----- Family structure: branch (#) → group (##) → family ----- */
+function parseOutline(txt){
+  const branches=[],groups=[],fams=[],byId={};let b=null,g=null;
+  const newB=(name,note)=>{b={name,note,groups:[]};branches.push(b);g=null};
+  const newG=name=>{if(!b)newB("العائلة","");g={name,key:b.name+"›"+name,b,fams:[]};b.groups.push(g);groups.push(g)};
+  String(txt||"").split("\n").forEach(raw=>{const l=raw.trim();if(!l)return;
+    if(l.startsWith("##")){newG(l.replace(/^#+/,"").trim());return}
+    if(l.startsWith("#")){const [n,note]=l.replace(/^#+/,"").split("|");newB((n||"").trim()||"فرع",(note||"").trim());return}
+    if(!g)newG("");const id=g.key+"›"+l;if(byId[id])return;const F={id,name:l,g};g.fams.push(F);fams.push(F);byId[id]=F});
+  return{branches,groups,fams,byId};
 }
+let tree=parseOutline(DEFAULTS.outline);
+function buildTreeData(){
+  const T=parseOutline(settings.outline);
+  const orphans=[...new Set(members.map(m=>m.family).filter(f=>f&&!T.byId[f]))];
+  if(orphans.length){const b={name:"أخرى",note:"",groups:[]},g={name:"",key:"أخرى›",b,fams:[]};b.groups.push(g);T.branches.push(b);T.groups.push(g);
+    orphans.forEach(id=>{const F={id,name:String(id).split("›").pop(),g};g.fams.push(F);T.fams.push(F);T.byId[id]=F})}
+  tree=T;
+}
+const famLabel=id=>{const F=tree.byId[id];if(!F)return{fam:id,group:"",branch:""};return{fam:F.name,group:F.g.name,branch:F.g.b.name}};
 function renderSelect(){
-  const sel=$("f-family"),cur=sel.value;sel.innerHTML="";
-  const ph=new Option("اختاري فخذك","");ph.disabled=true;ph.selected=!cur;sel.add(ph);
-  settings.families.forEach(f=>{const o=new Option(f,f);if(f===cur)o.selected=true;sel.add(o)});
+  const T=parseOutline(settings.outline);
+  const box=$("branchOpts"),prevB=(box.querySelector("input:checked")||{}).value;
+  const sig=T.branches.map(b=>b.name+"|"+b.note).join("¦");
+  if(box.dataset.sig!==sig){box.dataset.sig=sig;box.innerHTML="";
+    T.branches.forEach((b,i)=>{const lab=document.createElement("label");lab.className="rel-opt";lab.style.setProperty("--c",["#4E8A31","#7A5A2E","#3F7D6B","#8A6D1F"][i%4]);
+      const inp=document.createElement("input");inp.type="radio";inp.name="branch";inp.value=String(i);inp.id="b-"+i;if(prevB===String(i))inp.checked=true;
+      const card=document.createElement("span");card.className="rel-card";const dot=document.createElementNS("http://www.w3.org/2000/svg","svg");dot.setAttribute("class","twig-ic");dot.setAttribute("aria-hidden","true");const use=document.createElementNS("http://www.w3.org/2000/svg","use");use.setAttribute("href","#twigSym");dot.append(use);
+      const t=document.createElement("b");t.textContent=b.name;const sm=document.createElement("small");sm.textContent=b.note||" ";
+      card.append(dot,t,sm);lab.append(inp,card);box.append(lab);inp.addEventListener("change",()=>fillGroups(T))});
+  }
+  fillGroups(T);
 }
+function fillGroups(T){
+  T=T||parseOutline(settings.outline);
+  const bi=(($("branchOpts").querySelector("input:checked"))||{}).value,b=bi!==undefined?T.branches[+bi]:null;
+  const gs=$("f-group"),cur=gs.value;gs.innerHTML="";
+  const named=b?b.groups.filter(g=>g.name):[];
+  $("groupField").hidden=!!b&&!named.length;
+  if(!b){const o=new Option("اختاري الفرع أول","");o.disabled=true;o.selected=true;gs.add(o)}
+  else{const ph=new Option("اختاري المجموعة","");ph.disabled=true;gs.add(ph);
+    b.groups.forEach(g=>{const o=new Option(g.name||"بدون مجموعة",g.key);gs.add(o)});
+    if(b.groups.some(g=>g.key===cur))gs.value=cur;else if(!named.length&&b.groups[0])gs.value=b.groups[0].key;else ph.selected=true}
+  fillFamilies(T);
+}
+function fillFamilies(T){
+  T=T||parseOutline(settings.outline);
+  const g=T.groups.find(x=>x.key===$("f-group").value),fs=$("f-family"),cur=fs.value;fs.innerHTML="";
+  const ph=new Option(g?"اختاري عائلتك":"اختاري الفرع والمجموعة أول","");ph.disabled=true;fs.add(ph);
+  if(g)g.fams.forEach(F=>fs.add(new Option(F.name,F.id)));
+  if(g&&g.fams.some(F=>F.id===cur))fs.value=cur;else ph.selected=true;
+}
+$("f-group").addEventListener("change",()=>fillFamilies());
 function renderCounter(){
   const n=members.length,t=Math.max(1,settings.target|0);
   $("title").textContent=settings.title;
@@ -251,10 +346,11 @@ function renderCounter(){
   const p=Math.min(100,Math.round(n/t*100));
   $("pct").textContent=ar(p)+"٪";$("barFill").style.width=p+"%";
   const chips=$("chips");chips.innerHTML="";
-  familyList().forEach(f=>{
+  tree.groups.forEach(g=>{if(!g.fams.length)return;
+    const ids=new Set(g.fams.map(F=>F.id));
     const c=document.createElement("button");c.type="button";c.className="chip";
-    const b=document.createElement("b");b.textContent=ar(members.filter(m=>m.family===f).length);
-    c.append(f+": ",b);c.onclick=()=>{show("tree");zoomIn(f)};chips.append(c);
+    const b=document.createElement("b");b.textContent=ar(members.filter(m=>ids.has(m.family)).length);
+    c.append((g.name||g.b.name)+": ",b);c.onclick=()=>{show("tree");zoomIn(g.key)};chips.append(c);
   });
   const complete=n>=t;$("done").hidden=!complete;
   if(complete&&!celebrated&&n>0){celebrated=true;leafRain()}
@@ -279,7 +375,7 @@ function openCard(id){
   const h=document.createElement("h3");h.textContent=m.name;
   const dl=document.createElement("dl");
   const row=(k,v)=>{if(v===undefined||v===null||v==="")return;const dt=document.createElement("dt");dt.textContent=k;const dd=document.createElement("dd");dd.textContent=v;dl.append(dt,dd)};
-  row("القرابة",REL[relOf(m)].label);row("الفخذ",m.family);
+  row("القرابة",REL[relOf(m)].label);{const L=famLabel(m.family);row("العائلة",L.fam);row("المجموعة",L.group);row("الفرع",L.branch)}
   if(m.createdAt)row("سجّل",new Date(m.createdAt).toLocaleDateString("ar-SA",{day:"numeric",month:"long"}));
   card.append(h,dl);
   if(m.note){const q=document.createElement("blockquote");q.className="note";q.textContent=m.note;card.append(q)}
@@ -439,72 +535,71 @@ const leafSprites={daughter:makeLeafSprite("#9fcf5a","#5f9a34","#3f7426","rgba(2
 /* ---------- Tree model ---------- */
 let model=null,modelKey="";
 function buildModel(){
-  const fams=familyList(),n=fams.length;
-  const key=fams.join("|")+"#"+settings.target+"#"+settings.families.length;
+  const T=tree;const key=T.fams.map(F=>F.id).join("|")+"#"+settings.target;
   if(key===modelKey&&model)return;modelKey=key;
-  const r=rng(hash(fams.join("|"))+7);
-  const segs=[],twigs=[],perFam=Math.max(1,Math.ceil(settings.target/Math.max(1,settings.families.length)));
-  const famInfo=fams.map(f=>({f,tips:[],mids:[],segs:[]}));
-  const MAXD=n>6?4:n>3?4:5;
-  function grow(x,y,ang,len,w,depth,fi){
-    ang=ang+(-Math.PI/2-ang)*0.07*(depth>0?1:0.3);
-    const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;
-    const px=-Math.sin(ang),py=Math.cos(ang),bend=(r()-.5)*len*0.32;
-    const s={x0:x,y0:y,cx:(x+ex)/2+px*bend,cy:(y+ey)/2+py*bend-len*0.04,x1:ex,y1:ey,w0:w,w1:w*0.68,fi,depth};
-    segs.push(s);famInfo[fi].segs.push(s);
-    if(depth>=2)famInfo[fi].mids.push({x:(x+ex)/2+px*bend*0.5,y:(y+ey)/2+py*bend*0.5-len*0.04});
-    if(depth>=MAXD){famInfo[fi].tips.push({x:ex,y:ey});
-      const tn=2+Math.floor(r()*2);for(let i=0;i<tn;i++){const a=ang+(r()-.5)*1.4,l=10+r()*14;twigs.push({x0:ex,y0:ey,cx:ex+Math.cos(a)*l*0.5+(r()-.5)*4,cy:ey+Math.sin(a)*l*0.5,x1:ex+Math.cos(a)*l,y1:ey+Math.sin(a)*l,w0:Math.max(0.9,w*0.6),w1:0.35})}
-      return}
-    const k=depth===1&&r()<0.45?3:2;
-    for(let j=0;j<k;j++){
-      const spread=k===2?(j?1:-1)*(0.3+r()*0.22):(j-1)*(0.5+r()*0.12);
-      grow(ex,ey,ang+spread,len*(0.74+r()*0.1),w*0.66,depth+1,fi);
-    }
-  }
-  // trunk geometry (constant) and limbs per family
-  const forkY=448;
-  fams.forEach((f,i)=>{
-    const t=n===1?0.5:(i+0.5)/n;
-    const ang=lerp(-2.62,-0.52,t)+(r()-.5)*0.12;
-    const horiz=Math.abs(Math.cos(ang));
-    const len=(n>6?72:88)+horiz*48;
-    const sx=500+Math.cos(ang)*14,sy=forkY+6+Math.abs(t-0.5)*24;
-    grow(sx,sy,ang,len,Math.max(9,21-n*1.3),0,i);
+  const r=rng(hash(key)+7),forkY=448,C={x:500,y:forkY+8};
+  const segs=[],twigs=[],perFam=Math.max(2,Math.ceil(settings.target/Math.max(1,T.fams.length)));
+  const P=(a,rad)=>({x:C.x+Math.cos(a)*rad*1.2,y:C.y+Math.sin(a)*rad*0.95});
+  const seg=(p0,p1,w0,w1,lift)=>{const dx=p1.x-p0.x,dy=p1.y-p0.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len,bend=(r()-.5)*len*0.24;
+    const s={x0:p0.x,y0:p0.y,cx:(p0.x+p1.x)/2+nx*bend,cy:(p0.y+p1.y)/2+ny*bend-len*lift,x1:p1.x,y1:p1.y,w0,w1};segs.push(s);return s};
+  const nb=Math.max(1,T.branches.length),A0=-Math.PI+0.1,A1=-0.1,gapB=nb>1?0.1:0;
+  const cnt=b=>b.groups.reduce((a,g)=>a+g.fams.length,0);
+  const wts=T.branches.map(b=>Math.pow(Math.max(3,cnt(b)),0.85)),tw=wts.reduce((a,b)=>a+b,0)||1,avail=(A1-A0)-gapB*(nb-1);
+  const famInfo=[],groupInfo=[],branchInfo=[];let a=A0;
+  T.branches.forEach((b,bi)=>{
+    const span=avail*wts[bi]/tw,bs=a,be=a+span;a=be+gapB;
+    const bm=(bs+be)/2,mainNode=P(bm,92),trunkTop={x:500+Math.cos(bm)*16,y:forkY+4};
+    seg(trunkTop,mainNode,26,17,0.05);
+    const BI={b,node:mainNode,ang:bm,count:0};branchInfo.push(BI);
+    const gl=b.groups.filter(g=>g.fams.length),gn=gl.length,gtot=gl.reduce((s2,g)=>s2+g.fams.length,0)||1,gap=gn>1?0.035:0,gav=span-gap*Math.max(0,gn-1);
+    let ga=bs;
+    gl.forEach(g=>{
+      const gs=ga,gspan=gav*g.fams.length/gtot;ga+=gspan+gap;
+      const gm=gs+gspan/2,gnode=P(gm,gn>1?170:150);
+      seg(mainNode,gnode,16,10,0.08);
+      const GI={g,key:g.key,name:g.name||b.name,branchName:b.name,node:gnode,fams:[],count:0};groupInfo.push(GI);
+      const n=g.fams.length,arc=gspan*300*1.1/n,rings=arc<24?3:arc<40?2:1;
+      const radii=[[300],[272,334],[242,298,350]][rings-1];
+      const per=n<=3?n:Math.ceil(n/Math.ceil(n/3)),subR=radii[0]-(rings===3?40:rings===2?36:45);
+      // split big groups into small sub-branches of up to 3 families each
+      const subNodes=[];
+      for(let c=0;c*per<n;c++){
+        if(n<=3){subNodes.push(gnode);continue}
+        const i0=c*per,i1=Math.min(n,i0+per)-1,node=P(gs+((i0+i1)/2+0.5)/n*gspan,subR+(r()-.5)*10);
+        seg(gnode,node,10,6,0.06);subNodes.push(node);
+      }
+      g.fams.forEach((F0,i)=>{
+        const fa=gs+(i+0.5)/n*gspan,tip=P(fa,radii[i%rings]+(r()-.5)*12);
+        const s=seg(subNodes[Math.floor(i/per)],tip,6,2.6,0.12);
+        const tn=2+Math.floor(r()*2);for(let k=0;k<tn;k++){const ta=fa+(r()-.5)*1.5,l=10+r()*12;twigs.push({x0:tip.x,y0:tip.y,cx:tip.x+Math.cos(ta)*l*0.5,cy:tip.y+Math.sin(ta)*l*0.5,x1:tip.x+Math.cos(ta)*l,y1:tip.y+Math.sin(ta)*l,w0:1.6,w1:0.35})}
+        const F={f:F0.id,name:F0.name,g:g.key,GI,BI,tip,ang:fa,segs:[s],count:0};famInfo.push(F);GI.fams.push(F);
+      });
+    });
   });
-  // slots per family via farthest-point sampling
-  famInfo.forEach(F=>{
-    const cand=F.tips.concat(F.mids);
-    const cap=Math.max(perFam,1);
-    let pts=cand.slice();
-    while(pts.length<cap){const a=cand[pts.length%cand.length];pts.push({x:a.x+(r()-.5)*30,y:a.y+(r()-.5)*24})}
-    // start from the outermost tip
-    const order=[];let first=0,best=-1;pts.forEach((p,i)=>{const d=Math.hypot(p.x-500,p.y-forkY);if(d>best){best=d;first=i}});
-    const used=new Array(pts.length).fill(false);order.push(pts[first]);used[first]=true;
-    const dmin=pts.map(p=>Math.hypot(p.x-pts[first].x,p.y-pts[first].y));
-    while(order.length<cap){let bi=-1,bd=-1;for(let i=0;i<pts.length;i++)if(!used[i]&&dmin[i]>bd){bd=dmin[i];bi=i}
-      if(bi<0)break;used[bi]=true;order.push(pts[bi]);for(let i=0;i<pts.length;i++)dmin[i]=Math.min(dmin[i],Math.hypot(pts[i].x-pts[bi].x,pts[i].y-pts[bi].y))}
-    F.slots=order;
-    const xs=cand.map(p=>p.x),ys=cand.map(p=>p.y);
-    F.bx0=Math.min(...xs);F.bx1=Math.max(...xs);F.by0=Math.min(...ys);F.by1=Math.max(...ys);
-    const area=Math.max(2000,(F.bx1-F.bx0+40)*(F.by1-F.by0+40));
-    F.R=clamp(Math.sqrt(area/cap)*0.92,20,64);
-  });
-  model={segs:segs.sort((a,b)=>b.w0-a.w0),twigs,famInfo,forkY,perFam};
-  let x0=380,x1=620,y0=forkY;famInfo.forEach(F=>{x0=Math.min(x0,F.bx0-F.R*1.3);x1=Math.max(x1,F.bx1+F.R*1.3);y0=Math.min(y0,F.by0-F.R*1.6)});
+  famInfo.forEach(F=>{let d=1e9;famInfo.forEach(o=>{if(o!==F)d=Math.min(d,Math.hypot(o.tip.x-F.tip.x,o.tip.y-F.tip.y))});
+    F.R=clamp((d>1e8?70:d)*0.62,15,44);F.slots=[];
+    for(let k=0;k<perFam;k++){if(!k){F.slots.push({x:F.tip.x,y:F.tip.y-F.R*0.1});continue}
+      const an=F.ang+k*2.39996,dd=F.R*0.72*Math.sqrt(k);F.slots.push({x:F.tip.x+Math.cos(an)*dd,y:F.tip.y+Math.sin(an)*dd*0.8})}
+    const xs=F.slots.map(s2=>s2.x),ys=F.slots.map(s2=>s2.y);F.bx0=Math.min(...xs);F.bx1=Math.max(...xs);F.by0=Math.min(...ys);F.by1=Math.max(...ys)});
+  groupInfo.forEach(G=>{const fs=G.fams;
+    G.bx0=Math.min(...fs.map(F=>F.bx0-F.R),G.node.x);G.bx1=Math.max(...fs.map(F=>F.bx1+F.R),G.node.x);
+    G.by0=Math.min(...fs.map(F=>F.by0-F.R*1.4),G.node.y);G.by1=Math.max(...fs.map(F=>F.by1+F.R),G.node.y)});
+  model={segs:segs.sort((p,q)=>q.w0-p.w0),twigs,famInfo,groupInfo,branchInfo,forkY,perFam};
+  let x0=380,x1=620,y0=forkY;famInfo.forEach(F=>{x0=Math.min(x0,F.bx0-F.R*1.3);x1=Math.max(x1,F.bx1+F.R*1.3);y0=Math.min(y0,F.by0-F.R*1.8)});
   const half=Math.max(500-x0,x1-500);model.bounds={x0:500-half,x1:500+half,y0,y1:650};
   fitOverview();
 }
-let leaves=[],famByName={};
+let leaves=[],famByName={},groupByKey={};
 function assignLeaves(){
-  buildModel();famByName={};
+  buildModel();famByName={};groupByKey={};
+  model.groupInfo.forEach(G=>{G.count=0;groupByKey[G.key]=G});model.branchInfo.forEach(B=>B.count=0);
   const my=new Set(mine());
   const prev=new Map(leaves.map(l=>[l.m.id,l]));
   leaves=[];
   model.famInfo.forEach(F=>{
     famByName[F.f]=F;
     const fm=members.filter(m=>m.family===F.f).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
-    F.count=fm.length;
+    F.count=fm.length;F.GI.count+=fm.length;F.BI.count+=fm.length;
     fm.forEach((m,k)=>{
       const s=F.slots[k%F.slots.length],rr=rng(hash(m.id)),extra=Math.floor(k/F.slots.length);
       const x=s.x+(extra?(rr()-.5)*F.R:0),y=s.y-F.R*0.18+(extra?(rr()-.5)*F.R*0.8:0);
@@ -603,28 +698,28 @@ function tinted(src,col){ // multiply-tint a transparent layer, keep its alpha
 
 /* ---------- Camera & zoom ---------- */
 let zoomFam=null;
-function zoomCam(f){
-  const F=famByName[f];if(!F)return null;
-  const pad=F.R*1.3,bw=F.bx1-F.bx0+pad*2,bh=F.by1-F.by0+pad*2+40;
-  return{x:(F.bx0+F.bx1)/2,y:(F.by0+F.by1)/2+10,s:clamp(Math.min(W/bw,H/bh),OVER.s*1.3,OVER.s*5)};
+function zoomCam(gk){
+  const G=groupByKey[gk];if(!G||!G.fams.length)return null;
+  const bw=G.bx1-G.bx0+50,bh=G.by1-G.by0+80;
+  return{x:(G.bx0+G.bx1)/2,y:(G.by0+G.by1)/2+6,s:clamp(Math.min(W/bw,H/bh),OVER.s*1.2,OVER.s*5)};
 }
 function tweenCam(to,ms){
   if(reduced||!ms){cam={...to};dirty=bgDirty=true;return}
   const from={...cam},t0=performance.now();
   camAnim={from,to,t0,ms};
 }
-function zoomIn(f){
-  if(!famByName[f])return;$("card").hidden=true;selectedId=null;zoomFam=f;
-  const z=zoomCam(f);tweenCam(z,900);
-  const n=famByName[f].count;
-  $("zoomTitle").textContent="فخذ "+f+"، "+ar(n)+" "+(n===1?"ورقة":n>=3&&n<=10?"أوراق":"ورقة");
+function zoomIn(gk){
+  const G=groupByKey[gk];if(!G||!G.fams.length)return;$("card").hidden=true;selectedId=null;zoomFam=gk;
+  tweenCam(zoomCam(gk),900);$("stage").classList.add("zoomed");
+  const n=G.count;
+  $("zoomTitle").textContent=G.name+(G.name!==G.branchName?" · "+G.branchName:"")+"، "+ar(n)+" "+(n>=3&&n<=10?"أوراق":"ورقة");
   $("zoombar").hidden=false;$("skyUi").hidden=true;$("emptyMsg").hidden=true;
-  $("hint").textContent=n?"اضغطي على أي أوراق عشان تشوفين صاحبتها":"ما فيه أوراق في هذا الفخذ للحين";
+  $("hint").textContent=n?"اضغطي على أي أوراق عشان تشوفين صاحبتها":"ما فيه أوراق في هذي المجموعة للحين";
 }
 function zoomOut(){
-  zoomFam=null;$("card").hidden=true;selectedId=null;
+  zoomFam=null;$("card").hidden=true;selectedId=null;$("stage").classList.remove("zoomed");
   tweenCam(OVER,800);$("zoombar").hidden=true;$("skyUi").hidden=false;
-  $("hint").textContent="اضغطي على أي فخذ عشان تشوفين أوراقه";$("emptyMsg").hidden=members.length>0;
+  $("hint").textContent="اضغطي على أي مجموعة عشان تشوفين أوراقها";$("emptyMsg").hidden=members.length>0;
 }
 $("backBtn").onclick=zoomOut;
 function toWorld(px,py){return{x:(px-W/2)/cam.s+cam.x,y:(py-H/2)/cam.s+cam.y}}
@@ -635,20 +730,19 @@ cv.addEventListener("pointerup",e=>{
   if(!down||Math.hypot(e.clientX-down.x,e.clientY-down.y)>8){down=null;return}down=null;
   const r=cv.getBoundingClientRect(),p=toWorld(e.clientX-r.left,e.clientY-r.top);
   if(zoomFam){
-    let best=null,bd=1e9;leaves.forEach(l=>{if(l.F.f!==zoomFam)return;const d=Math.hypot(l.x-p.x,(l.y-p.y)*1.2);if(d<l.R*1.15&&d<bd){bd=d;best=l}});
+    let best=null,bd=1e9;leaves.forEach(l=>{if(l.F.g!==zoomFam)return;const d=Math.hypot(l.x-p.x,(l.y-p.y)*1.2);if(d<l.R*1.15&&d<bd){bd=d;best=l}});
     if(best){openCard(best.m.id);return}
   }
   // which family is closest?
   let bf=null,bd=1e9;
-  model.famInfo.forEach(F=>{F.segs.forEach(s=>{[[s.x1,s.y1],[s.cx,s.cy]].forEach(([qx,qy])=>{const d=Math.hypot(qx-p.x,qy-p.y);if(d<bd){bd=d;bf=F}})});
-    F.slots.forEach(s=>{const d=Math.hypot(s.x-p.x,s.y-p.y);if(d<bd){bd=d;bf=F}})});
-  if(bf&&bd<Math.max(60,bf.R*1.6)&&bf.f!==zoomFam){zoomIn(bf.f);return}
+  model.famInfo.forEach(F=>{F.slots.concat([F.tip]).forEach(s=>{const d=Math.hypot(s.x-p.x,s.y-p.y);if(d<bd){bd=d;bf=F}})});
+  if(bf&&bd<Math.max(50,bf.R*1.8)&&bf.g!==zoomFam){zoomIn(bf.g);return}
   if(zoomFam)zoomOut();
 });
 let hoverT=0;cv.addEventListener("pointermove",e=>{const now=performance.now();if(now-hoverT<80||e.pointerType!=="mouse")return;hoverT=now;
   const r=cv.getBoundingClientRect(),p=toWorld(e.clientX-r.left,e.clientY-r.top);
-  let hit=false;if(zoomFam)hit=leaves.some(l=>l.F.f===zoomFam&&Math.hypot(l.x-p.x,(l.y-p.y)*1.2)<l.R*1.15);
-  else hit=model.famInfo.some(F=>F.slots.some(s=>Math.hypot(s.x-p.x,s.y-p.y)<Math.max(50,F.R*1.4)));
+  let hit=false;if(zoomFam)hit=leaves.some(l=>l.F.g===zoomFam&&Math.hypot(l.x-p.x,(l.y-p.y)*1.2)<l.R*1.15);
+  else hit=model.famInfo.some(F=>F.slots.some(s=>Math.hypot(s.x-p.x,s.y-p.y)<Math.max(50,F.R*1.8)));
   cv.style.cursor=hit?"pointer":""});
 
 /* ---------- Effects ---------- */
@@ -656,7 +750,7 @@ let flight=null,sparks=[],ambient=[],fireflies=[];
 {const r=rng(9);for(let i=0;i<30;i++)fireflies.push({x:180+r()*640,y:300+r()*320,p:r()*10})}
 function startFlight(id){
   const l=leaves.find(v=>v.m.id===id);if(!l)return false;
-  if(reduced){zoomIn(l.F.f);showWelcome(l.m);return true}
+  if(reduced){zoomIn(l.F.g);showWelcome(l.m);return true}
   l.hidden=true;l.grow=0;dirty=true;
   const side=l.x>500?1:-1;
   flight={l,t:0,dur:4.2,x0:l.x+side*160,y0:cam.y-H/2/cam.s-40,x1:l.x,y1:l.y+4,spin:Math.random()*6};
@@ -720,7 +814,7 @@ function frame(now){
     const x=lerp(f.x0,f.x1,ease)+Math.sin(ph)*amp,y=lerp(f.y0,f.y1,ease);
     const rot=Math.cos(ph)*1.0*(1-k*0.5)+f.spin*(1-k)*0.15,flip=Math.cos(ph*1.4+f.spin);
     drawLeafAt(x,y,rot,(flip<0?-1:1)*(0.25+0.75*Math.abs(flip)),Math.max(14,22/Math.max(1,cam.s/OVER.s)),1,f.l.rel);
-    if(k>=1){spawnSparks(f.x1,f.y1);const id=f.l.m.id,cur=leaves.find(v=>v.m.id===id)||f.l;cur.hidden=false;cur.grow=0;dirty=true;const fam=cur.F.f;flight=null;
+    if(k>=1){spawnSparks(f.x1,f.y1);const id=f.l.m.id,cur=leaves.find(v=>v.m.id===id)||f.l;cur.hidden=false;cur.grow=0;dirty=true;const fam=cur.F.g;flight=null;
       showWelcome(cur.m);setTimeout(()=>{zoomIn(fam);setTimeout(()=>{pulseId=id;pulseT=0},900)},1200)}
   }
   sparks=sparks.filter(s=>{s.t+=dt;s.x+=s.vx*dt;s.y+=s.vy*dt;s.vy+=30*dt;const a=1-s.t/0.9;if(a<=0)return false;
@@ -733,24 +827,33 @@ function frame(now){
 }
 let pulseId=null,pulseT=0;
 function pill(text,x,y,size,bg,fg,font){
-  ctx.font=`${font} ${size*DPR}px "IBM Plex Sans Arabic", Tahoma, sans-serif`;ctx.direction="rtl";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.font=`${font} ${size*DPR}px "Cairo", Tahoma, sans-serif`;ctx.direction="rtl";ctx.textAlign="center";ctx.textBaseline="middle";
   const w=ctx.measureText(text).width+size*1.3*DPR,h=size*1.7*DPR;
   ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect?ctx.roundRect(x*DPR-w/2,y*DPR-h/2,w,h,h/2):ctx.rect(x*DPR-w/2,y*DPR-h/2,w,h);ctx.fill();
   ctx.fillStyle=fg;ctx.fillText(text,x*DPR,y*DPR+size*0.08*DPR);
 }
 function drawLabels(t,dt){
   ctx.setTransform(1,0,0,1,0,0);
+  const placed=[];
+  const place=(txt,x,y,fs,bg,weight,minY,optional)=>{ctx.font=`${weight} ${fs*DPR}px "Cairo", Tahoma, sans-serif`;
+    const w=ctx.measureText(txt).width/DPR+fs*1.4,h=fs*1.85;y=Math.max(minY||0,y);
+    const hit=()=>placed.some(q=>Math.abs(q.x-x)<(q.w+w)/2+2&&Math.abs(q.y-y)<(q.h+h)/2);
+    for(let tries=0;tries<5&&hit();tries++)y+=h*0.6;
+    if(optional&&hit())return false;
+    placed.push({x,y,w,h});pill(txt,x,y,fs,bg,"#fff",weight);return true};
   if(!zoomFam&&!camAnim){
-    const placed=[],fs=clamp(W/55,12,16);
-    model.famInfo.forEach(F=>{const cx=F.slots.reduce((a,s)=>a+s.x,0)/F.slots.length,cy=F.slots.reduce((a,s)=>a+s.y,0)/F.slots.length;
-      const p=toScreen(cx,cy);let y=Math.max(60,p.y);const txt=F.f+" ("+ar(F.count)+")";
-      ctx.font=`700 ${fs*DPR}px "IBM Plex Sans Arabic", Tahoma, sans-serif`;const w=ctx.measureText(txt).width/DPR+fs*1.4,h=fs*1.9;
-      for(let tries=0;tries<4&&placed.some(r=>Math.abs(r.x-p.x)<(r.w+w)/2&&Math.abs(r.y-y)<h);tries++)y+=h*1.05;
-      placed.push({x:p.x,y,w});pill(txt,p.x,y,fs,"rgba(22,32,20,.6)","#fff","700")});
+    const fb=clamp(W/48,14,19),fg=clamp(W/70,11.5,14);
+    model.branchInfo.forEach(B=>{if(!B.b.groups.some(g=>g.fams.length))return;const p=toScreen(B.node.x,B.node.y+14);
+      place(B.b.name+" ("+ar(B.count)+")",p.x,p.y,fb,"rgba(110,62,24,.88)","700",60)});
+    model.branchInfo.forEach(B=>{if(!B.b.note||W<420||!B.b.groups.some(g=>g.fams.length))return;const q=toScreen(B.node.x,B.node.y+14);place(B.b.note,q.x,q.y+fb*1.9,fg,"rgba(40,30,18,.6)","600",60,true)});
+    if(W>=520)model.groupInfo.forEach(G=>{if(!G.g.name)return;const p=toScreen(G.node.x,G.node.y);
+      place(G.name+" ("+ar(G.count)+")",p.x,p.y,fg,"rgba(22,32,20,.62)","700",60,true)});
   }
   if(zoomFam&&!camAnim){
-    leaves.forEach(l=>{if(l.F.f!==zoomFam||l.hidden)return;const p=toScreen(l.x,l.y+l.R*0.75);
-      pill(l.m.name,p.x,p.y,14,l.mine?"rgba(196,146,30,.92)":"rgba(22,32,20,.62)","#fff","600")});
+    const G=groupByKey[zoomFam];
+    if(G)G.fams.forEach(F=>{const p=toScreen(F.tip.x,F.by0-F.R*0.95);place(F.name+" ("+ar(F.count)+")",p.x,p.y,13,"rgba(110,62,24,.85)","700",54)});
+    leaves.forEach(l=>{if(l.F.g!==zoomFam||l.hidden)return;const p=toScreen(l.x,l.y+l.R*0.75);
+      place(l.m.name,p.x,p.y,12.5,l.mine?"rgba(196,146,30,.92)":"rgba(22,32,20,.62)","600",54,true)});
   }
   if(pulseId){pulseT+=dt;const l=leaves.find(v=>v.m.id===pulseId);if(!l||pulseT>2.2){pulseId=null}else{
     const p=toScreen(l.x,l.y),r=l.R*cam.s*(1+pulseT*0.6),a=Math.max(0,1-pulseT/2.2);
@@ -759,11 +862,10 @@ function drawLabels(t,dt){
 
 /* ---------- Render + data ---------- */
 function renderAll(){
-  renderSelect();
-  const fk=familyList().join("|")+"#"+settings.target+"#"+settings.families.length;if(fk!==modelKey){model=null;}
+  buildTreeData();renderSelect();
   assignLeaves();renderCounter();
   if(pendingFly&&leaves.some(l=>l.m.id===pendingFly)){if(startFlight(pendingFly))pendingFly=null}
-  if(zoomFam&&!famByName[zoomFam])zoomOut();
+  if(zoomFam&&!groupByKey[zoomFam])zoomOut();
   if(selectedId)openCard(selectedId);
 }
 renderAll();
@@ -774,7 +876,7 @@ $("regForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const err=$("formErr");err.hidden=true;const f=e.target;
   const name=f.name.value.trim(),family=f.family.value,relEl=f.querySelector('input[name="relation"]:checked'),relation=relEl?relEl.value:"";
-  if(!name||!relation||!family){err.textContent=!name?"اكتبي اسمك قبل التسجيل.":!relation?"اختاري القرابة: زوجة من العائلة، أو بنت العائلة، أو بنت بنت العائلة.":"اختاري الفخذ قبل التسجيل.";err.hidden=false;return}
+  if(!name||!relation||!family){err.textContent=!name?"اكتبي اسمك قبل التسجيل.":!relation?"اختاري القرابة: زوجة من العائلة، أو بنت العائلة، أو بنت بنت العائلة.":"اختاري الفرع والمجموعة والعائلة قبل التسجيل.";err.hidden=false;return}
   if(!db){err.textContent="ما قدرت أوصل للسيرفر. تأكدي إنه شغّال وجرّبي مرة ثانية.";err.hidden=false;return}
   const data={name,relation,family,createdAt:Date.now()};
   const btn=$("submitBtn");btn.disabled=true;btn.textContent="جاري التسجيل...";
@@ -784,28 +886,28 @@ $("regForm").addEventListener("submit",async e=>{
     if(zoomFam)zoomOut();
     show("tree");
     await ref.set(data);
-    f.reset();renderSelect();
+    f.reset();$("f-name").value="";fillGroups();
   }catch(ex){
     pendingFly=null;show("form");
     err.textContent=ex&&ex.code==="not_granted"?"ما عندك صلاحية تسجّل في هذي الصفحة. اطلب من المنظّم يعطيك صلاحية المساهمة.":"ما انحفظ التسجيل، تأكد من الاتصال وجرّب مرة ثانية.";
     err.hidden=false;
-  }finally{btn.disabled=false;btn.textContent="سجّلي وعلّقي ورقتك 🍃"}
+  }finally{btn.disabled=false;btn.innerHTML="<span>سجّلي وعلّقي ورقتك</span>"+icon("leaf")}
 });
 
-function fillAdmin(){$("s-title").value=settings.title;$("s-target").value=settings.target;$("s-families").value=settings.families.join("\n")}
+function fillAdmin(){$("s-title").value=settings.title;$("s-target").value=settings.target;$("s-families").value=settings.outline}
 $("saveSettings").onclick=async()=>{
   const err=$("adminErr");err.hidden=true;
-  const families=$("s-families").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  const outline=$("s-families").value.trim();
   const target=parseInt($("s-target").value,10);
-  if(!families.length||!(target>0)){err.textContent="اكتب فخذ واحد على الأقل وعدد متوقع أكبر من صفر.";err.hidden=false;return}
+  if(!parseOutline(outline).fams.length||!(target>0)){err.textContent="اكتب عائلة وحدة على الأقل، وعدد متوقع أكبر من صفر.";err.hidden=false;return}
   const btn=$("saveSettings");btn.disabled=true;btn.textContent="جاري الحفظ...";
-  try{await db.doc("settings/main").set({title:$("s-title").value.trim()||DEFAULTS.title,target,families});btn.textContent="انحفظت ✓"}
+  try{await db.doc("settings/main").set({title:$("s-title").value.trim()||DEFAULTS.title,target,outline});btn.innerHTML="<span>انحفظت</span>"+icon("check")}
   catch(e){err.textContent="ما انحفظت الإعدادات، جرّب مرة ثانية.";err.hidden=false;btn.textContent="حفظ الإعدادات"}
   finally{btn.disabled=false;setTimeout(()=>btn.textContent="حفظ الإعدادات",1800)}
 };
 
 let rt=null;const scheduleRender=()=>{clearTimeout(rt);rt=setTimeout(renderAll,30)};
-/* Local data layer: talks to server.js, which saves everything in data.json */
+/* ---------- Local data layer: talks to server.js, which saves everything in data.json ---------- */
 const api=async(method,url,body)=>{const r=await fetch(url,{method,headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});if(!r.ok)throw{code:"server",message:await r.text()};return r.json()};
 db={
   collection:()=>({doc:()=>{const id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -821,7 +923,7 @@ async function poll(){
   try{const st=await api("GET","/api/state");const key=JSON.stringify(st);$("noDb").hidden=true;
     if(key===lastState)return;lastState=key;
     settings={...DEFAULTS,...(st.settings||{})};
-    if(!Array.isArray(settings.families)||!settings.families.length)settings.families=DEFAULTS.families;
+    if(typeof settings.outline!=="string"||!parseOutline(settings.outline).fams.length)settings.outline=DEFAULTS.outline;
     if(isAdmin&&!document.activeElement.closest("#admin"))fillAdmin();
     members=(st.members||[]).filter(m=>m.name&&m.family);
     scheduleRender();
